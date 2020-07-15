@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport"
+    content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+  <link rel="icon" href="<%= BASE_URL %>favicon.ico" />
+  <title>blog</title>
+</head>
+
+<body>
+  <noscript>
+    <strong>We're sorry but sample doesn't work properly without JavaScript
+      enabled. Please enable it to continue.</strong>
+  </noscript>
+  <div id="appCopy"></div>
+  <!-- built files will be auto injected -->
+  <script type="text/JavaScript">
+    // 服务器部署时恢复
+    // if (!document.cookie) {
+    //   // location.href = 'http://oauth02.fit.10-124-130-142.sslip.io/oauth/authorize?response_type=code&client_id=57dbdba0-d6d0-4d48-84ce-ceb7c6ef65bb&redirect_uri=http://10.167.213.134:8000/client/loginCallback'//内网地址
+    //   location.href = 'http://oauth2.fii-fmc.com/oauth/authorize?response_type=code&client_id=d9fb39ac-5050-4366-99b9-f4f99c5977e0&redirect_uri=http://andon.fii-fmc.com/client/loginCallback'//外网地址
+    // }
+    // 校验浏览器类型与版本
+    checkBroswerVersion ();
+      // 校验浏览器关闭是否超过5分钟
+      // checkTookieExpired();
+      // function checkTookieExpired(params) {
+      //   const timestamp = Number(localStorage.getItem('expired') || 0)
+      //   const now = new Date().getTime()
+      //   console.log(now , timestamp, now - timestamp)
+      //   if (now - timestamp > 300000) {
+      //     localStorage.removeItem('userInfo');
+      //     if (location.href.indexOf('login') === -1) {
+      //       location.href = '/login'
+      //     }
+      //   }
+      // }
+      function checkBroswerVersion () {
+        function getVersion (_key) {
+          if (_key && _key !== 'IE') {
+            const key = _key.toUpperCase();
+            const agent = navigator.userAgent.replace(/\([^\)]*\)/g, '').replace(/\s+/g, ' ').toUpperCase();
+            const arr = agent.split(' ');
+            if (arr.length) {
+              for(var i=0;i<arr.length;i++){
+                if (key === 'EDGE') {
+                  if(arr[i].indexOf('EDGE') >= 0 || arr[i].indexOf('EDG') >= 0) {
+                    return arr[i].replace(/\S+\//g, '');
+                  }
+                } else {
+                  if(arr[i].indexOf(key) >= 0) {
+                    return arr[i].replace(/\S+\//g, '');
+                  }
+                }
+              }
+            }
+          } else {
+            const isIE11 = userAgent.indexOf('Trident') > -1 && userAgent.indexOf("rv:11.0") > -1;
+            if (isIE11) {
+              return 11
+            } else {
+              var reIE = new RegExp("MSIE (\\d+\\.\\d+);");
+                  reIE.test(userAgent);
+              var fIEVersion = parseFloat(RegExp["$1"]);
+              if(fIEVersion === 7) {
+                  return 7;
+              } else if(fIEVersion === 8) {
+                  return 8;
+              } else if(fIEVersion === 9) {
+                  return 9;
+              } else if(fIEVersion === 10) {
+                  return 10;
+              } else {
+                  return 6;//IE版本<=7
+              }
+            }
+          }
+          return ver;
+        }
+        const local = {
+          matchBroswer: {
+            'en-US': 'Tips: This system (Fii Andon) currently only supports Google Chrome browser、Firefox browser、Microsoft Edge broswer, The minimum browser version requirements are as follows:',
+            'zh-CN': ' 温馨提示：本系统(Fii Andon)目前仅支持Google Chrome、Firefox、Microsoft Edge浏览器，且浏览器版本（最低）要求如下：',
+            'zh-TW': ' 溫馨提示：本系統(Fii Andon)目前僅支持Google Chrome、Firefox、Microsoft Edge流覽器，且浏览器版本（最低）要求如下：'
+          }
+        }
+        // 最低版本要求限制
+        const vers = {
+          FIREFOX: ['58.0.0'],
+          CHROME: ['72.0.0000'],
+          EDGE: ['75.0.000.0']
+        }
+        const lang = navigator.language;
+        let ver;
+        let userAgent = navigator.userAgent; //取得浏览器的userAgent字符串
+        let isOpera = userAgent.indexOf("Opera") > -1; //判断是否Opera浏览器
+        // var isIE = userAgent.indexOf("compatible") > -1 && userAgent.indexOf("MSIE") > -1 && !isOpera; //判断是否IE浏览器
+        let isIE = window.ActiveXObject || "ActiveXObject" in window
+        // var isEdge = userAgent.indexOf("Windows NT 6.1; Trident/7.0;") > -1 && !isIE; //判断是否IE的Edge浏览器
+        let isEdge = userAgent.indexOf("Edge") > -1 || userAgent.indexOf("Edg") > -1; //判断是否IE的Edge浏览器
+        let isFF = userAgent.indexOf("Firefox") > -1; //判断是否Firefox浏览器
+        let isSafari = userAgent.indexOf("Safari") > -1 && userAgent.indexOf("Chrome") == -1; //判断是否Safari浏览器
+        let isChrome = userAgent.indexOf("Chrome") > -1 && userAgent.indexOf("Safari") > -1&&!isEdge; //判断Chrome浏览器
+        let flag;
+        let broswer;
+        if (isIE) {
+          broswer = 'IE';
+        } else if(isEdge) {
+          broswer = 'Edge';
+        } else if (isFF) {
+          broswer = 'Firefox';
+        } else if (isChrome) {
+          broswer = 'Chrome';
+        } else if (isOpera) {
+          broswer = 'Opera';
+        } else if (isSafari) {
+          broswer = 'Safari';
+        } else {
+          broswer = '';
+        }
+        localStorage.setItem('broswer', broswer)
+        broswer = broswer.toUpperCase();
+        let p = '';
+        // 判断是否屏蔽该浏览器 && 判断浏览器版本要求是否合适
+        if (['CHROME', 'FIREFOX', 'EDGE'].indexOf(broswer) === -1 || getVersion(broswer) < vers[broswer][0]) {
+          p = '<img src="<%= BASE_URL %>logo.png" style="width: 52px;"><p style="display: inline-block;width: 100%;padding-bottom: 15px;text-align:left;">' + local.matchBroswer[lang] + '</p>';
+          let trs = '';
+          let count = 0;
+          for( let _key in vers) {
+            const color = count++ % 2 === 1 ? '#ddd' : '#f1f1f1';
+            const key = _key.charAt(0).toUpperCase() + _key.toLowerCase().slice(1)
+            trs += '<tr style="background-color: ' + color + '"><td>' + key + '</td><td>' + (vers[_key][1] || vers[_key][0]) + '+</td></tr>'
+          }
+          let tab = '<table style="width: 100%;"><thead style="width: 100%;background-color: #69d9b2;"><tr><th style="width: 50%;">Broswer</th><th style="width: 50%;">Version</th></tr></thead><tbody style="width: 100%;">' + trs + '</tbody></table>'
+          document.body.innerHTML = '<div style="width: 100%;font-size: 18px;line-height: 36px;text-align: center;margin-top: 100px;"><div style="display: inline-block;width: 500px;">' + p + tab + '</div></div>';
+        }
+      }
+    </script>
+</body>
+
+</html>
